@@ -20,40 +20,53 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        randomNumber = Int(arc4random_uniform(101))
-        numLabel.text = "Move the slider to: \(randomNumber)"
+        setNewRandomNumber()
     }
 
     @IBAction func playAgain(_ sender: Any) {
-        randomNumber = Int(arc4random_uniform(101))
-        numLabel.text = "Move the slider to: \(randomNumber)"
-        playAgainButton.isHidden = true
-        resultLabel.isHidden = true
-        slider.setValue(50.0, animated: false)
+        setNewRandomNumber()
+        resetState()
     }
     
     @IBAction func check(_ sender: Any) {
         if exactMode.isOn == false {
             if Int(slider.value) <= randomNumber + 3 &&
                 Int(slider.value) >= randomNumber - 3 {
-                resultLabel.text = "You were right on point! Bullseye!"
-                resultLabel.backgroundColor = UIColor.green
+                dispayResultMessage(isWinner: true)
             } else {
-                resultLabel.text = "Whoops! You missed! Try again later"
-                resultLabel.backgroundColor = UIColor.red
+                dispayResultMessage(isWinner: false)
             }
         } else {
             if Int(slider.value) == randomNumber {
-                resultLabel.text = "You were right on point! Bullseye!"
-                resultLabel.backgroundColor = UIColor.green
+                dispayResultMessage(isWinner: true)
             } else {
-                resultLabel.text = "Whoops! You missed! Try again later"
-                resultLabel.backgroundColor = UIColor.red
+                dispayResultMessage(isWinner: false)
             }
         }
         
         resultLabel.isHidden = false
         playAgainButton.isHidden = false
+    }
+    
+    func resetState() {
+        playAgainButton.isHidden = true
+        resultLabel.isHidden = true
+        slider.setValue(50.0, animated: false)
+    }
+    
+    func setNewRandomNumber() {
+        randomNumber = Int(arc4random_uniform(101))
+        numLabel.text = "Move the slider to: \(randomNumber)"
+    }
+    
+    func dispayResultMessage(isWinner: Bool ) {
+        if isWinner {
+            resultLabel.text = "You were right on point! Bullseye!"
+            resultLabel.backgroundColor = UIColor.green
+        } else {
+            resultLabel.text = "Whoops! You missed! Try again later"
+            resultLabel.backgroundColor = UIColor.red
+        }
     }
 }
 
